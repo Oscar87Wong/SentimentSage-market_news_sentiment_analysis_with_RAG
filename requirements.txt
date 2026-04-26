@@ -1,3 +1,4 @@
+langchain
 langchain-community
 langchain-openai
 openai
@@ -9,4 +10,3 @@ pandas
 tiktoken
 streamlit
 plotly
-langchain
