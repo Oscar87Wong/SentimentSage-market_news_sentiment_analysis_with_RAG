@@ -4,8 +4,8 @@ import pandas as pd
 from transformers import BertTokenizer, BertForSequenceClassification
 from transformers import pipeline
 import torch
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_classic.chains import create_retrieval_chain
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import OpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
