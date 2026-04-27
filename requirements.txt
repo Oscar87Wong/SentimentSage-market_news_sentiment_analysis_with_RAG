@@ -10,3 +10,4 @@ pandas
 tiktoken
 streamlit
 plotly
+torchvision
