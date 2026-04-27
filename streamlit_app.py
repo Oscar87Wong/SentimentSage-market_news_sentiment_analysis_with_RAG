@@ -323,15 +323,17 @@ def main():
                         question = f"Can you provide a sentiment analysis and risk summary for {company} based on the news articles? Please give me a detailed analysis."
                         
                         try:
-                            result = qa_pipeline.invoke(question)
+                            # CHANGE 1: Pass the question as a dictionary with the key "input"
+                            result = qa_pipeline.invoke({"input": question})
                             
                             st.markdown("### 📝 Summary")
-                            st.write(result['result'])
+                            # CHANGE 2: The new chain outputs the text under 'answer', not 'result'
+                            st.write(result['answer'])
                             
-                            # Show source documents
-                            if 'source_documents' in result and result['source_documents']:
+                            # CHANGE 3: The source documents are now under 'context', not 'source_documents'
+                            if 'context' in result and result['context']:
                                 with st.expander("📚 Source Documents"):
-                                    for i, doc in enumerate(result['source_documents'][:3]):
+                                    for i, doc in enumerate(result['context'][:3]):
                                         st.write(f"**Source {i+1}:** {doc.page_content[:300]}...")
                         
                         except Exception as e:
