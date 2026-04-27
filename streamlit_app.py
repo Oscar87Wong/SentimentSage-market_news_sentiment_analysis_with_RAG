@@ -308,7 +308,7 @@ def main():
                     else:
                         return 'background-color: #fff3cd'
                 
-                styled_df = display_df.style.applymap(color_sentiment, subset=['label'])
+                styled_df = display_df.style.map(color_sentiment, subset=['label'])
                 st.dataframe(styled_df, use_container_width=True)
             
             # Step 3: RAG Analysis
