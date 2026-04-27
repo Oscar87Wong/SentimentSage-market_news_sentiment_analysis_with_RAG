@@ -4,7 +4,9 @@ import pandas as pd
 from transformers import BertTokenizer, BertForSequenceClassification
 from transformers import pipeline
 import torch
-from langchain.chains import RetrievalQA
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import OpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import TextLoader
@@ -112,7 +114,6 @@ def analyze_sentiment(articles, pipe):
 def build_rag_pipeline(articles):
     """Build RAG pipeline for question answering"""
     try:
-        # Create temporary file
         with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt", encoding="utf-8") as f:
             f.write("\n\n".join(articles))
             temp_file = f.name
@@ -126,16 +127,29 @@ def build_rag_pipeline(articles):
         embeddings = OpenAIEmbeddings()
         db = FAISS.from_documents(docs, embeddings)
 
-        qa_chain = RetrievalQA.from_chain_type(
-            llm=OpenAI(temperature=0),
+        # --- 新版 RAG 寫法 ---
+        llm = OpenAI(temperature=0)
+        
+        # 定義提示詞模板
+        prompt = ChatPromptTemplate.from_template("""
+        Answer the following question based only on the provided financial news context:
+        <context>
+        {context}
+        </context>
+        Question: {input}
+        """)
+
+        # 建立文件組合鏈
+        combine_docs_chain = create_stuff_documents_chain(llm, prompt)
+        
+        # 建立最終檢索鏈
+        qa_chain = create_retrieval_chain(
             retriever=db.as_retriever(),
-            return_source_documents=True
+            combine_docs_chain=combine_docs_chain
         )
 
-        # Clean up temporary file
         os.unlink(temp_file)
-        
-        return qa_chain
+        return qa_chain # 注意：新版回傳的是一個 Chain 物件
     except Exception as e:
         st.error(f"Error building RAG pipeline: {str(e)}")
         return None
