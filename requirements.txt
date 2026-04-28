@@ -11,3 +11,4 @@ tiktoken
 streamlit
 plotly
 torchvision
+langchain-nvidia-ai-endpoints
