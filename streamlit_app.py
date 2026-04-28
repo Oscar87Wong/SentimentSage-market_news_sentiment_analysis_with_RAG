@@ -25,6 +25,7 @@ OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 NEWS_API_KEY = st.secrets["NEWS_API_KEY"]
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
+#For NVidia AI API Keys
 #NVIDIA_API_KEY = st.secrets["NVIDIA_API_KEY"]
 #os.environ["NVIDIA_API_KEY"] = NVIDIA_API_KEY
 
@@ -132,6 +133,8 @@ def build_rag_pipeline(articles):
         db = FAISS.from_documents(docs, embeddings)
 
         llm = OpenAI(temperature=0)
+
+        #For NVidia API
         #embeddings = NVIDIAEmbeddings(model="nvidia/nv-embedqa-e5-v5") 
         
         #db = FAISS.from_documents(docs, embeddings)
@@ -149,17 +152,17 @@ def build_rag_pipeline(articles):
         Question: {input}
         """)
 
-        # 建立文件組合鏈
+        
         combine_docs_chain = create_stuff_documents_chain(llm, prompt)
         
-        # 建立最終檢索鏈
+      
         qa_chain = create_retrieval_chain(
             retriever=db.as_retriever(),
             combine_docs_chain=combine_docs_chain
         )
 
         os.unlink(temp_file)
-        return qa_chain # 注意：新版回傳的是一個 Chain 物件
+        return qa_chain 
     except Exception as e:
         st.error(f"Error building RAG pipeline: {str(e)}")
         return None
@@ -208,9 +211,9 @@ def main():
         
         # Company input
         company = st.text_input(
-            "Enter Company Ticker",
+            "Enter Company/Ticker",
             placeholder="e.g., AAPL, TSLA, GOOGL",
-            help="Enter the stock ticker symbol for the company you want to analyze"
+            help="Enter the company/stock ticker symbol for the company you want to analyze"
         ).strip().upper()
         
         # Analysis options
@@ -223,7 +226,7 @@ def main():
     
     # Main content area
     if not company:
-        st.info("👈 Enter a company ticker in the sidebar to get started!")
+        st.info("👈 Enter a company/ticker in the sidebar to get started!")
         
         # Show example
         st.subheader("📋 How it works:")
