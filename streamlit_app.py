@@ -330,7 +330,7 @@ def main():
                     
                     if qa_pipeline:
                         # Use custom question or default
-                        question = f"Can you provide a sentiment analysis and risk summary for {company} based on the news articles? Please give me a detailed analysis and trading strategies based on last trading date current price about this {company}."
+                        question = f"Can you provide a sentiment analysis and risk summary for {company} based on the news articles? Please give me a detailed analysis and trading strategies based on last trading date 27/4/2026 about this {company}."
                         
                         try:
                             # CHANGE 1: Pass the question as a dictionary with the key "input"
