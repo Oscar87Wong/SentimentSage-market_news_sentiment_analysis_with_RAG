@@ -21,12 +21,12 @@ from langchain_nvidia_ai_endpoints import ChatNVIDIA, NVIDIAEmbeddings
 
 
 # Access the API keys from secrets
-#OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 NEWS_API_KEY = st.secrets["NEWS_API_KEY"]
-#os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
-NVIDIA_API_KEY = st.secrets["NVIDIA_API_KEY"]
-os.environ["NVIDIA_API_KEY"] = NVIDIA_API_KEY
+#NVIDIA_API_KEY = st.secrets["NVIDIA_API_KEY"]
+#os.environ["NVIDIA_API_KEY"] = NVIDIA_API_KEY
 
 # Page configuration
 st.set_page_config(
@@ -128,17 +128,17 @@ def build_rag_pipeline(articles):
         splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
         docs = splitter.split_documents(documents)
 
-        #embeddings = OpenAIEmbeddings()
-        #db = FAISS.from_documents(docs, embeddings)
-
-        #llm = OpenAI(temperature=0)
-        embeddings = NVIDIAEmbeddings(model="nvidia/nv-embedqa-e5-v5") 
-        
+        embeddings = OpenAIEmbeddings()
         db = FAISS.from_documents(docs, embeddings)
+
+        llm = OpenAI(temperature=0)
+        #embeddings = NVIDIAEmbeddings(model="nvidia/nv-embedqa-e5-v5") 
+        
+        #db = FAISS.from_documents(docs, embeddings)
 
         # --- CHANGE 2: Use NVIDIA Chat Model ---
         # You can choose models like "meta/llama-3.1-405b-instruct" or "nvidia/nemotron-4-340b-instruct"
-        llm = ChatNVIDIA(model="meta/llama-3.1-8b-instruct", temperature=0.2)
+        #llm = ChatNVIDIA(model="meta/llama-3.1-8b-instruct", temperature=0.2)
         
         # 定義提示詞模板
         prompt = ChatPromptTemplate.from_template("""
