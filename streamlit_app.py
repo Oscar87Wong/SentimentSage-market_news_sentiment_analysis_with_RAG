@@ -131,7 +131,6 @@ def build_rag_pipeline(articles):
         #embeddings = OpenAIEmbeddings()
         #db = FAISS.from_documents(docs, embeddings)
 
-        # --- 新版 RAG 寫法 ---
         #llm = OpenAI(temperature=0)
         embeddings = NVIDIAEmbeddings(model="nvidia/nv-embedqa-e5-v5") 
         
@@ -331,7 +330,7 @@ def main():
                     
                     if qa_pipeline:
                         # Use custom question or default
-                        question = f"Can you provide a sentiment analysis and risk summary for {company} based on the news articles? Please give me a detailed analysis and trading strategies (long or short stocks and options) about this {company}."
+                        question = f"Can you provide a sentiment analysis and risk summary for {company} based on the news articles? Please give me a detailed analysis and trading strategies based on last trading date current price about this {company}."
                         
                         try:
                             # CHANGE 1: Pass the question as a dictionary with the key "input"
