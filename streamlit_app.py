@@ -126,13 +126,13 @@ def build_rag_pipeline(articles):
         loader = TextLoader(temp_file, encoding="utf-8")
         documents = loader.load()
 
-        """splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
         docs = splitter.split_documents(documents)
 
-        embeddings = OpenAIEmbeddings()
-        db = FAISS.from_documents(docs, embeddings)
+        #embeddings = OpenAIEmbeddings()
+        #db = FAISS.from_documents(docs, embeddings)
 
-        llm = OpenAI(temperature=0)"""
+        #llm = OpenAI(temperature=0)
 
         #For NVidia API
         embeddings = NVIDIAEmbeddings(model="nvidia/nv-embedqa-e5-v5") 
